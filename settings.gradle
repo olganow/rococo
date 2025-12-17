@@ -1,3 +1,13 @@
 rootProject.name = 'rococo'
-include 'rococo-gateway'
-include 'rococo-auth'
+
+def modules = [
+        'rococo-gateway',
+        'rococo-auth',
+        'rococo-e2e'
+]
+
+modules.each { m ->
+    if (file(m).exists()) {
+        include m
+    }
+}
