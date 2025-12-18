@@ -4,6 +4,7 @@ import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.support.FindBy;
 
 import static com.codeborne.selenide.Condition.*;
+import static com.codeborne.selenide.Selenide.page;
 
 public class LoginPage {
 
@@ -31,7 +32,7 @@ public class LoginPage {
     @FindBy(xpath = "//*[@class='form__password-button']")
     private SelenideElement formPasswordButton;
 
-    @FindBy(xpath = "//*[text()='Войти']")
+    @FindBy(xpath = "//*[contains(text(),'Войти')]")
     private SelenideElement submitButton;
 
     @FindBy(xpath = "//*[@class='form__paragraph']")
@@ -39,6 +40,9 @@ public class LoginPage {
 
     @FindBy(xpath = "//*[@class='content__image']")
     private SelenideElement contentImage;
+
+    @FindBy(xpath = "//*[@class='form__error login__error']")
+    private SelenideElement credentialValidationMessage;
 
     public void checkAllLoginPageElementsAreVisible() {
         logo.shouldBe(visible).shouldHave(text("Rococo"));
@@ -69,13 +73,25 @@ public class LoginPage {
         return this;
     }
 
-    public LoginPage clickSubmitButton() {
+    public LoginPage tryToClickSubmitButton() {
         submitButton.click();
         return this;
     }
 
-    public LoginPage clickRegisterButton() {
-        registerButton.click();
+    public LoginPage checkCredentialValidationMessage() {
+        String expectedText = "Bad credentials";
+        credentialValidationMessage.shouldBe(visible).shouldHave(text(expectedText));
         return this;
     }
+
+    public MainPage clickSubmitButton() {
+        submitButton.click();
+        return page(MainPage.class);
+    }
+
+    public RegisterPage clickRegisterButton() {
+        registerButton.click();
+        return page(RegisterPage.class);
+    }
+
 }

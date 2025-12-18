@@ -1,10 +1,10 @@
 package io.student.rococo.page;
 
-import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.support.FindBy;
 
 import static com.codeborne.selenide.Condition.*;
+import static com.codeborne.selenide.Selenide.page;
 
 public class MainPage {
 
@@ -70,7 +70,22 @@ public class MainPage {
 
     public LoginPage clickLoginButton() {
         loginButton.click();
-        return Selenide.page(LoginPage.class);
+        return page(LoginPage.class);
+    }
+
+    public PaintingPage clickPaintingsButton() {
+        mainPageMenuPicturesButton.click();
+        return page(PaintingPage.class);
+    }
+
+    public ArtistPage clickArtistsButton() {
+        mainPageMenuArtistsButton.click();
+        return page(ArtistPage.class);
+    }
+
+    public MuseumPage clickMuseumsButton() {
+        mainPageMenuMuseumsButton.click();
+        return page(MuseumPage.class);
     }
 
 }
