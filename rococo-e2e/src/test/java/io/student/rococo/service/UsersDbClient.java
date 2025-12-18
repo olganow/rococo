@@ -1,23 +1,21 @@
 package io.student.rococo.service;
 
+import io.student.rococo.config.Config;
 import io.student.rococo.model.UserJson;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import javax.sql.DataSource;
+import java.sql.DriverManager;
 import java.util.Optional;
 import java.util.UUID;
 
 public class UsersDbClient implements UserClient {
 
-    private final JdbcTemplate jdbcTemplate;
-    private final PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    private static final Config CFG = Config.getInstance();
 
-    //Принимает DataSource и создает JdbcTemplate
-    public UsersDbClient(DataSource dataSource) {
-        this.jdbcTemplate = new JdbcTemplate(dataSource);
-    }
+    private final PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 
     @Override
     public UserJson createUser(String username, String password) {
@@ -29,7 +27,17 @@ public class UsersDbClient implements UserClient {
             //Используется passwordEncoder.encode(password) (как требовалось)
             final String encodedPassword = passwordEncoder.encode(password);
 
-            // Вставляем пользователя в таблицу user
+
+                final JdbcTemplate jdbcTemplate = new JdbcTemplate(new SingleConnectionDataSource(
+                        DriverManager.getConnection(
+                                CFG.userJdbcUrl(),
+                                CFG.dbUsername(),
+                                CFG.dbPassword()
+                        ),
+                        true)
+                );
+
+                // Вставляем пользователя в таблицу user
             //Используется UUID_TO_BIN(?, true) для конвертации UUID (как требовалось)
             //
             //Все boolean поля устанавливаются в true (как в UserService)
@@ -41,7 +49,6 @@ public class UsersDbClient implements UserClient {
             );
 
             // Вставляем authority 'read' для пользователя
-
             //Используется тот же userId (как требовалось)
             // Создаются обе authorities: 'read' и 'write' (как в UserService)
             jdbcTemplate.update(
@@ -76,6 +83,14 @@ public class UsersDbClient implements UserClient {
     @Override
     public Optional<UserJson> findByUsername(String username) {
         try {
+            final JdbcTemplate jdbcTemplate = new JdbcTemplate(new SingleConnectionDataSource(
+                    DriverManager.getConnection(
+                            CFG.userJdbcUrl(),
+                            CFG.dbUsername(),
+                            CFG.dbPassword()
+                    ),
+                    true)
+            );
             // Извлекаем пользователя из базы данных
             String sql = "SELECT BIN_TO_UUID(id) as uuid, username FROM `user` WHERE username = ?";
 
