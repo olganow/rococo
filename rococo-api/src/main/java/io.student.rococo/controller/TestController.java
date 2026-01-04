@@ -1,3 +1,4 @@
+/*
 package io.student.rococo.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,4 +11,4 @@ public class TestController {
     public String secure() {
         return "This is secured endpoint";
     }
-}
+}*/
