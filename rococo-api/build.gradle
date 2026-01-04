@@ -1,0 +1,58 @@
+plugins {
+    id 'org.springframework.boot' version '3.5.8'
+}
+
+group = 'io.student'
+version = '1.0.0'
+
+dependencies {
+// Безопасность и аутентификация
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+// Основной модуль Spring Security - предоставляет базовую аутентификацию, авторизацию,
+// защиту от CSRF, управление сессиями и другие функции безопасности
+
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+// Превращает приложение в OAuth 2.0 Resource Server (сервер ресурсов)
+// Позволяет защищать API с помощью JWT (JSON Web Tokens) или opaque tokens
+// Обычно используется вместе с Keycloak, Auth0 или другим OAuth-провайдером
+
+// Веб-слой приложения
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+// Основной модуль для создания веб-приложений (REST API)
+// Включает: Spring MVC, встроенный Tomcat, Jackson для JSON, валидацию
+// Позволяет создавать контроллеры, обрабатывать HTTP-запросы
+
+// Работа с данными
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+// Spring Data JPA для работы с реляционными базами данных
+// Упрощает создание репозиториев, поддерживает автоматические запросы по имени метода
+// Работает с Hibernate как реализацией JPA по умолчанию
+
+// Валидация данных
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+// Bean Validation API (Jakarta EE) - аннотации для валидации полей объектов
+// Например: @NotNull, @Size, @Email, @Pattern
+// Автоматическая валидация входных данных в контроллерах
+
+ // библиотека, которая отвечает за версионирование миграций
+    implementation "org.flywaydb:flyway-core:${project.ext.flywayVersion}"
+    implementation "org.flywaydb:flyway-mysql:${project.ext.flywayVersion}"
+
+// Lombok - уменьшение boilerplate кода
+    annotationProcessor "org.projectlombok:lombok:${project.ext.lombokVersion}"
+// Обработчик аннотаций Lombok во время компиляции
+// Генерирует геттеры, сеттеры, конструкторы, builder'ы и т.д. на основе аннотаций
+
+    compileOnly "org.projectlombok:lombok:${project.ext.lombokVersion}"
+// Только для компиляции - не включается в итоговый artifact
+// Предоставляет аннотации: @Getter, @Setter, @NoArgsConstructor,
+// @AllArgsConstructor, @Builder, @Slf4j, @Data
+
+    runtimeOnly "mysql:mysql-connector-java:${project.ext.mysqlDriverVersion}"
+}
+
+tasks.register('printVersion') {
+    doLast {
+        println project.version
+    }
+}
