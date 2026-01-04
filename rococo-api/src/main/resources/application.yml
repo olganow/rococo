@@ -5,6 +5,11 @@ spring:
   application:
     name: rococo-api
   security:
+  # Тестовый пользователь
+    # security:
+    #   user:
+    #     name: testuser
+    #     password: testpass
     oauth2:
       resourceserver:
         jwt:

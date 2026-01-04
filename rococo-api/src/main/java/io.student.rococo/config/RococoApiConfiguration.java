@@ -1,3 +1,4 @@
+/*
 package io.student.rococo.config;
 
 import org.springframework.context.annotation.Bean;
@@ -25,3 +26,4 @@ public class RococoApiConfiguration {
     return http.build();
   }
 }
+*/
