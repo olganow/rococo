@@ -1,6 +1,8 @@
 package io.student.rococo.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.student.rococo.service.cors.CorsCustomizer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -16,6 +18,13 @@ import java.text.SimpleDateFormat;
 @EnableWebSecurity
 @Configuration
 public class RococoApiConfiguration {
+
+    public final CorsCustomizer corsCustomizer;
+
+    @Autowired
+    public RococoApiConfiguration(CorsCustomizer corsCustomizer) {
+        this.corsCustomizer = corsCustomizer;
+    }
 
     /**
      * Публичная цепочка безопасности - для endpoints, доступных без аутентификации
@@ -43,6 +52,7 @@ public class RococoApiConfiguration {
     @Bean
     @Order(2)
     public SecurityFilterChain protectedSecurityFilterChain(HttpSecurity http) throws Exception {
+        corsCustomizer.apply(http);
         return http
                 // Обрабатываем ВСЕ запросы, КРОМЕ /api/session
                 .securityMatcher("/api/**")
@@ -63,5 +73,4 @@ public class RococoApiConfiguration {
         objectMapper.setDateFormat(df);
         return objectMapper;
     }
-
 }
