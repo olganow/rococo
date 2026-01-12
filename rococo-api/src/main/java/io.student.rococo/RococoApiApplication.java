@@ -9,11 +9,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 // 3. @ComponentScan - включает сканирование компонентов в текущем пакете и подпакетах
 @SpringBootApplication
 public class RococoApiApplication {
-  public static void main(String[] args) {
-      // Запуск Spring Boot приложения
-      // SpringApplication.run() инициализирует Spring контекст, настраивает сервер и т.д.
-      // PhotocatalogApplication.class - класс с аннотацией @SpringBootApplication
-      // args - аргументы командной строки
-    SpringApplication.run(RococoApiApplication.class);
-  }
+    public static void main(String[] args) {
+        // Запуск Spring Boot приложения
+        // SpringApplication.run() инициализирует Spring контекст, настраивает сервер и т.д.
+        // PhotocatalogApplication.class - класс с аннотацией @SpringBootApplication
+        // args - аргументы командной строки
+        SpringApplication.run(RococoApiApplication.class);
+    }
 }
